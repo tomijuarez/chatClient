@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="602.0" maxWidth="1001.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane prefHeight="70.0" prefWidth="1001.0" style="-fx-background-color: #0277BD;" />
+      <Pane layoutY="54.0" prefHeight="550.0" prefWidth="1001.0">
+         <children>
+            <Pane layoutY="15.0" prefHeight="535.0" prefWidth="287.0" style="-fx-border-width: 0 1 1 1;">
+               <children>
+                  <Pane prefHeight="53.0" prefWidth="287.0">
+                     <children>
+                        <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Canales">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutY="53.0" prefHeight="481.0" prefWidth="287.0">
+                     <children>
+                        <ScrollPane prefHeight="481.0" prefWidth="287.0" vbarPolicy="ALWAYS">
+                           <content>
+                              <VBox prefHeight="479.0" prefWidth="283.0">
+                                 <children>
+                                    <TreeView fx:id="channelsTree" prefHeight="484.0" prefWidth="283.0" />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane layoutX="287.0" layoutY="16.0" prefHeight="535.0" prefWidth="712.0" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 0 0 0 1;" />
+         </children>
+      </Pane>
+   </children>
+</Pane>
