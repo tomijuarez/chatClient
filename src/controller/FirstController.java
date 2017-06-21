@@ -27,7 +27,7 @@ public class FirstController extends MediableController implements Initializable
 
     private Mediator mediator;
 
-    private UserValidator validator = new UserValidator();
+    private NameValidator validator = new NameValidator();
 
     public FirstController() { }
 
@@ -42,8 +42,7 @@ public class FirstController extends MediableController implements Initializable
             String userName = this.usernameInput.getText();
             if(!userName.isEmpty())
                 if(this.validator.validate(userName)) {
-                    User user = new User();
-                    Modal subWindow = new Modal("layouts/chatView.fxml", new ChannelController(user), new Stage(), this.context);
+                    Modal subWindow = new Modal("layouts/chatView.fxml", new ChannelController(userName), new Stage(), this.context);
                     this.context.setChild(subWindow, new ChannelMediator());
                 }
                 else

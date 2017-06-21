@@ -9,23 +9,31 @@
 
 <Pane maxHeight="602.0" maxWidth="1001.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="1001.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane prefHeight="70.0" prefWidth="1001.0" style="-fx-background-color: #0277BD;" />
+      <Pane prefHeight="69.0" prefWidth="1001.0" style="-fx-background-color: #0277BD;">
+         <children>
+            <Text fill="WHITE" layoutX="14.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WanakoChat">
+               <font>
+                  <Font size="39.0" />
+               </font>
+            </Text>
+            <JFXButton fx:id="logoutButton" layoutX="874.0" layoutY="9.0" prefHeight="53.0" prefWidth="114.0" ripplerFill="#e45858" style="-fx-background-color: #bb3535;" text="SALIR" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </JFXButton>
+         </children></Pane>
       <Pane layoutY="54.0" prefHeight="550.0" prefWidth="1001.0">
          <children>
             <Pane layoutY="15.0" prefHeight="535.0" prefWidth="287.0" style="-fx-border-width: 0 1 1 1;">
                <children>
                   <Pane prefHeight="53.0" prefWidth="287.0">
                      <children>
-                        <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Canales">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Text>
+                        <JFXButton fx:id="createChannelButton" prefHeight="53.0" prefWidth="287.0" ripplerFill="#6ab982" style="-fx-background-color: #277552;" text="CREAR UN NUEVO CANAL" textFill="WHITE" />
                      </children>
                   </Pane>
                   <Pane layoutY="53.0" prefHeight="481.0" prefWidth="287.0">
                      <children>
-                        <ScrollPane prefHeight="481.0" prefWidth="287.0" vbarPolicy="ALWAYS">
+                        <ScrollPane prefHeight="481.0" prefWidth="287.0">
                            <content>
                               <VBox prefHeight="479.0" prefWidth="283.0">
                                  <children>
@@ -38,7 +46,27 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane layoutX="287.0" layoutY="16.0" prefHeight="535.0" prefWidth="712.0" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 0 0 0 1;" />
+            <Pane layoutX="287.0" layoutY="16.0" prefHeight="528.0" prefWidth="712.0" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 0 0 0 1;">
+               <children>
+                  <ScrollPane prefHeight="447.0" prefViewportHeight="445.0" prefViewportWidth="712.0" prefWidth="714.0">
+                     <content>
+                        <TableView editable="true" prefHeight="445.0" prefWidth="712.0">
+                           <columns>
+                              <TableColumn fx:id="messagesColumn" prefWidth="711.0" text="MENSAJES" />
+                           </columns></TableView>
+                     </content>
+                  </ScrollPane>
+                  <Pane layoutY="445.0" prefHeight="88.0" prefWidth="714.0">
+                     <children>
+                        <JFXButton fx:id="sendMessageButton" layoutX="556.0" layoutY="11.0" prefHeight="69.0" prefWidth="146.0" ripplerFill="#6ab982" style="-fx-background-color: #277552;" text="ENVIAR" textFill="WHITE" />
+                        <JFXTextArea fx:id="messageInput" layoutX="14.0" layoutY="9.0" prefHeight="69.0" prefWidth="516.0" promptText="Escriba un mensaje...">
+                           <font>
+                              <Font size="35.0" />
+                           </font>
+                        </JFXTextArea>
+                     </children>
+                  </Pane>
+               </children></Pane>
          </children>
       </Pane>
    </children>
