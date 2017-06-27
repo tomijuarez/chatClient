@@ -48,6 +48,14 @@ public class ChatClient extends Observable {
         return protocol + ChatClient.SEPARATOR + part1 + ChatClient.SEPARATOR + part2;
     }
 
+    private String buildRequest(String protocol, String part1, String part2, String part3) {
+        return protocol + ChatClient.SEPARATOR + part1 + ChatClient.SEPARATOR + part2 + ChatClient.SEPARATOR + part3;
+    }
+
+    private String buildRequest(String protocol, String part1, String part2, String part3, String part4) {
+        return protocol + ChatClient.SEPARATOR + part1 + ChatClient.SEPARATOR + part2 + ChatClient.SEPARATOR + part3 + ChatClient.SEPARATOR + part4;
+    }
+
     private boolean makeRequest(String request) {
         try {
             this.writter.write((request+ChatClient.NEW_LINE).getBytes());
@@ -104,6 +112,18 @@ public class ChatClient extends Observable {
         this.notifyObservers(new Logout(userName));
     }
 
+    public void sendNewGlobalMessage(String channel, String from, String msg) {
+        System.out.println("NUEVO MENSAJE: canal "+channel + " de "+from+" -> "+msg);
+        if (!this.makeRequest(this.buildRequest(ChatClient.MESSAGE, channel, from, msg)))
+            System.out.println("Error en el request ");
+    }
+
+    public void sendNewDirectMessage(String channel, String from, String to, String msg) {
+        System.out.println("NUEVO MENSAJE: canal "+channel + " de "+from+" a " +to+" -> "+msg);
+        if (!this.makeRequest(this.buildRequest(ChatClient.MESSAGE, channel, from, to, msg)))
+            System.out.println("Error en el request ");
+    }
+
     public void triggerNewChannel(String channelName) {
         setChanged();
         this.notifyObservers(new CreateChannel(channelName));
@@ -136,4 +156,13 @@ public class ChatClient extends Observable {
         this.notifyObservers(new Clear());
     }
 
+    public void triggerDirectMessage(String channel, String from, String to, String message) {
+        setChanged();
+        this.notifyObservers(new DirectMessage(channel, from, to, message));
+    }
+
+    public void triggerGlobalMessage(String channel, String from, String message) {
+        setChanged();
+        this.notifyObservers(new GlobalMessage(channel, from, message));
+    }
 }

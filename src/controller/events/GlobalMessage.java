@@ -20,11 +20,11 @@ public class GlobalMessage implements ChannelEventAcceptor {
     }
 
     public String getFrom() {
-        return this.channel;
+        return this.from;
     }
 
     public String getMessage() {
-        return this.channel;
+        return this.message;
     }
 
     @Override

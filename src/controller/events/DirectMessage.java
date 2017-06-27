@@ -22,15 +22,15 @@ public class DirectMessage implements ChannelEventAcceptor {
     }
 
     public String getFrom() {
-        return this.channel;
+        return this.from;
     }
 
     public String getTo() {
-        return this.channel;
+        return this.to;
     }
 
     public String getMessage() {
-        return this.channel;
+        return this.message;
     }
 
     @Override

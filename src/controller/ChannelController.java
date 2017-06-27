@@ -2,16 +2,14 @@ package controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTreeTableColumn;
 import controller.events.*;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import model.*;
 import sun.reflect.generics.tree.Tree;
@@ -35,10 +33,13 @@ public class ChannelController extends MediableController implements Initializab
     @FXML JFXButton logoutButton;
     @FXML JFXButton sendMessageButton;
     @FXML JFXTextArea messageInput;
+    @FXML TableColumn messagesColumn;
 
     private ChannelMediator mediator;
 
     private String userName;
+    private String selectedUser = "";
+    private String selectedChannel = "";
     private NameValidator validator = new NameValidator();
 
 
@@ -77,8 +78,16 @@ public class ChannelController extends MediableController implements Initializab
 
         this.sendMessageButton.setOnAction((event)->{
             String msg = this.messageInput.getText();
-            if(!msg.isEmpty())
-                System.out.println("MENSAJE: "+msg);
+            if(!msg.isEmpty()) {
+                if (!this.selectedChannel.equals("")) {
+                    if(!this.selectedUser.equals("")) {
+                        this.client.sendNewDirectMessage(this.selectedChannel, this.userName, this.selectedUser, msg);
+                    }
+                    else {
+                        this.client.sendNewGlobalMessage(this.selectedChannel, this.userName, msg);
+                    }
+                }
+            }
         });
     }
 
@@ -108,6 +117,8 @@ public class ChannelController extends MediableController implements Initializab
             this.client.toggleChannel(selectedItem.getValue(), this.userName);
         }
         else {
+            this.selectedUser = selectedItem.getValue();
+            this.selectedChannel = selectedItem.getParent().getValue();
             this.client.toggleUser(selectedItem.getParent().getValue(), selectedItem.getValue());
         }
     }
@@ -215,11 +226,17 @@ public class ChannelController extends MediableController implements Initializab
     @Override
     public void visit(DirectMessage event) {
         System.out.println("MENSAJE DIRECTO");
+        System.out.println(event.getFrom());
+        System.out.println(event.getTo());
+        System.out.println(event.getMessage());
     }
 
     @Override
     public void visit(GlobalMessage event) {
         System.out.println("MENSAJE GLOBAL");
+        System.out.println(event.getFrom());
+        System.out.println(event.getChannel());
+        System.out.println(event.getMessage());
     }
 
     @Override
@@ -240,7 +257,7 @@ public class ChannelController extends MediableController implements Initializab
 
     @Override
     public void visit(Clear event) {
-        System.out.println("LIMPIAR");
+        //this.messagesColumn.get
     }
 
     @Override

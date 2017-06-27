@@ -56,6 +56,34 @@ public class Listener extends Thread{
 
             this.callProperFunction(command, part1, part2);
         }
+        else if(chunks.length == 4) {
+            String command = chunks[0];
+            String part1 = chunks[1];
+            String part2 = chunks[2];
+            String part3 = chunks[3];
+
+            System.out.println(command);
+            System.out.println(part1);
+            System.out.println(part2);
+            System.out.println(part3);
+
+            this.callProperFunction(command, part1, part2, part3);
+        }
+        else if(chunks.length == 5) {
+            String command = chunks[0];
+            String part1 = chunks[1];
+            String part2 = chunks[2];
+            String part3 = chunks[3];
+            String part4 = chunks[4];
+
+            System.out.println(command);
+            System.out.println(part1);
+            System.out.println(part2);
+            System.out.println(part3);
+            System.out.println(part4);
+
+            this.callProperFunction(command, part1, part2, part3, part4);
+        }
     }
 
     //Función sucia. CASE is evil.
@@ -86,6 +114,22 @@ public class Listener extends Thread{
                 break;
             case Listener.LOAD_USERS:
                 this.client.triggerLoadUsers(part1, part2.split(Listener.SEP_ITEMS));
+                break;
+        }
+    }
+
+    private void callProperFunction(String command, String part1, String part2, String part3) {
+        switch (command) {
+            case Listener.MESSAGE:
+                this.client.triggerGlobalMessage(part1, part2, part3);
+                break;
+        }
+    }
+
+    private void callProperFunction(String command, String part1, String part2, String part3, String part4) {
+        switch (command) {
+            case Listener.MESSAGE:
+                this.client.triggerDirectMessage(part1, part2, part3, part4);
                 break;
         }
     }
