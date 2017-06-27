@@ -5,11 +5,14 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import controller.events.*;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import model.*;
 import sun.reflect.generics.tree.Tree;
@@ -33,11 +36,15 @@ public class ChannelController extends MediableController implements Initializab
     @FXML JFXButton logoutButton;
     @FXML JFXButton sendMessageButton;
     @FXML JFXTextArea messageInput;
-    @FXML TableColumn messagesColumn;
+    @FXML TableView table;
+
+    private TableColumn<String, String> messagesColumn;
+
+    private ObservableList<String> messages = FXCollections.observableArrayList();
 
     private ChannelMediator mediator;
 
-    private String userName;
+    private String userName = "";
     private String selectedUser = "";
     private String selectedChannel = "";
     private NameValidator validator = new NameValidator();
@@ -89,6 +96,14 @@ public class ChannelController extends MediableController implements Initializab
                 }
             }
         });
+
+        this.messagesColumn = new TableColumn<>("MENSAJES");
+        this.messagesColumn.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
+        this.messagesColumn.setPrefWidth(700);
+
+        this.table.getColumns().add(this.messagesColumn);
+        this.table.setItems(this.messages);
+
     }
 
     private void createChannel() {
@@ -114,12 +129,22 @@ public class ChannelController extends MediableController implements Initializab
 
     private void toggleChannel(TreeItem<String> selectedItem) {
         if(selectedItem.getParent() == this.channelsTree.getRoot()) {
-            this.client.toggleChannel(selectedItem.getValue(), this.userName);
+            if(this.selectedChannel.equals("") || !this.selectedChannel.equals(selectedItem.getValue())) {
+                this.selectedChannel = selectedItem.getValue();
+                this.client.toggleChannel(selectedItem.getValue(), this.userName);
+                this.messages.clear();
+                this.messagesColumn.setText("Mensajes globales en el canal " + selectedItem.getValue());
+            }
         }
         else {
-            this.selectedUser = selectedItem.getValue();
-            this.selectedChannel = selectedItem.getParent().getValue();
-            this.client.toggleUser(selectedItem.getParent().getValue(), selectedItem.getValue());
+            System.out.println("CANAL ELEGIDO "+selectedItem.getParent().getValue()+" ACTUAL: "+this.selectedChannel + " | USUARIO ELEGIDO "+selectedItem.getValue()+ " ACTUAL: "+this.selectedUser);
+            if((this.selectedChannel.equals("") && this.selectedUser.equals("")) || (!this.selectedUser.equals(selectedItem.getValue()) && !this.selectedChannel.equals(selectedItem.getParent().getValue()))) {
+                this.selectedUser = selectedItem.getValue();
+                this.selectedChannel = selectedItem.getParent().getValue();
+                this.client.toggleUser(selectedItem.getParent().getValue(), selectedItem.getValue());
+                this.messages.clear();
+                this.messagesColumn.setText("Mensajes con " + this.selectedUser + " en el canal " + this.selectedChannel);
+            }
         }
     }
 
@@ -225,23 +250,22 @@ public class ChannelController extends MediableController implements Initializab
 
     @Override
     public void visit(DirectMessage event) {
-        System.out.println("MENSAJE DIRECTO");
-        System.out.println(event.getFrom());
-        System.out.println(event.getTo());
-        System.out.println(event.getMessage());
+        if(this.selectedChannel.equals(event.getChannel())){
+            if(this.selectedUser.equals(event.getFrom()) || this.selectedUser.equals(event.getTo())) {
+                this.messages.add(event.getFrom() + " dice: "+event.getMessage());
+            }
+        }
     }
 
     @Override
     public void visit(GlobalMessage event) {
-        System.out.println("MENSAJE GLOBAL");
-        System.out.println(event.getFrom());
-        System.out.println(event.getChannel());
-        System.out.println(event.getMessage());
+        if(this.selectedChannel.equals(event.getChannel())) {
+            this.messages.add(event.getFrom() + " dice: "+event.getMessage());
+        }
     }
 
     @Override
     public void visit(Logout event) {
-        System.out.println("CERRÓ SESIÓN "+event.getUserName());
         if(event.getUserName().equals(this.userName))
             Platform.runLater(new Runnable(){
                 @Override
@@ -257,7 +281,7 @@ public class ChannelController extends MediableController implements Initializab
 
     @Override
     public void visit(Clear event) {
-        //this.messagesColumn.get
+        this.messages.clear();
     }
 
     @Override

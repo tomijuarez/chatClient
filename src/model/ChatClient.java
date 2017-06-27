@@ -113,15 +113,15 @@ public class ChatClient extends Observable {
     }
 
     public void sendNewGlobalMessage(String channel, String from, String msg) {
-        System.out.println("NUEVO MENSAJE: canal "+channel + " de "+from+" -> "+msg);
         if (!this.makeRequest(this.buildRequest(ChatClient.MESSAGE, channel, from, msg)))
             System.out.println("Error en el request ");
     }
 
     public void sendNewDirectMessage(String channel, String from, String to, String msg) {
-        System.out.println("NUEVO MENSAJE: canal "+channel + " de "+from+" a " +to+" -> "+msg);
         if (!this.makeRequest(this.buildRequest(ChatClient.MESSAGE, channel, from, to, msg)))
             System.out.println("Error en el request ");
+        else
+            triggerDirectMessage(channel, from, to, msg);
     }
 
     public void triggerNewChannel(String channelName) {

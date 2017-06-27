@@ -50,10 +50,8 @@
                <children>
                   <ScrollPane prefHeight="447.0" prefViewportHeight="445.0" prefViewportWidth="712.0" prefWidth="714.0">
                      <content>
-                        <TableView editable="true" prefHeight="445.0" prefWidth="712.0">
-                           <columns>
-                              <TableColumn fx:id="messagesColumn" prefWidth="711.0" text="MENSAJES" />
-                           </columns></TableView>
+                        <TableView fx:id="table" editable="true" prefHeight="445.0" prefWidth="712.0">
+                        </TableView>
                      </content>
                   </ScrollPane>
                   <Pane layoutY="445.0" prefHeight="88.0" prefWidth="714.0">
